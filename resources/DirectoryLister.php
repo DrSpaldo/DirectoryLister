@@ -23,6 +23,7 @@ class DirectoryLister {
     protected $_directory     = null;
     protected $_appDir        = null;
     protected $_appURL        = null;
+    protected $_cdnURL	      = null;
     protected $_config        = null;
     protected $_fileTypes     = null;
     protected $_systemMessage = null;
@@ -44,7 +45,10 @@ class DirectoryLister {
         // Build the application URL
         $this->_appURL = $this->_getAppUrl();
 
-        // Load the configuration file
+	// Build the application URL
+        $this->_cdnURL = $this->_getCdnUrl();
+        
+	// Load the configuration file
         $configFile = $this->_appDir . '/config.php';
 
         // Set the config array to a global variable
@@ -622,9 +626,9 @@ class DirectoryLister {
                     // Add all non-hidden files to the array
                     if ($this->_directory != '.' || $file != 'index.php') {
 
-                        // Build the file path
-                        $urlPath = implode('/', array_map('rawurlencode', explode('/', $relativePath)));
-
+			    
+			$urlPath = implode($this->cdnURL . '/', array_map('rawurlencode', explode('/', $relativePath)));	
+			
                         if (is_dir($relativePath)) {
                             $urlPath = $this->containsIndex($relativePath) ? $relativePath : '?dir=' . $urlPath;
                         }
@@ -632,7 +636,7 @@ class DirectoryLister {
                         // Add the info to the main array
                         $directoryArray[pathinfo($relativePath, PATHINFO_BASENAME)] = array(
                             'file_path'  => $relativePath,
-                            'url_path'   => $urlPath,
+			    'url_path'   => $urlPath,
                             'file_size'  => is_dir($realPath) ? '-' : $this->getFileSize($realPath),
                             'mod_time'   => date($this->_config['date_format'], filemtime($realPath)),
                             'icon_class' => $iconClass,
@@ -834,7 +838,36 @@ class DirectoryLister {
         return $appUrl;
     }
 
+    /**
+     * Builds the cdn application URL from server variables.
+     *
+     * @return string The application URL
+     * @access protected
+     */
+    protected function _getcdnUrl() {
+        // Get the server protocol
+            $protocol = '//';
+        // Get the server hostname
+	$this->_cdnhostname = $this->_config['cdn_site'];
+	$cdnhost = 'stevenz.xyz';
+	// Get the URL path
+        $pathParts = pathinfo($_SERVER['PHP_SELF']);
+        $path      = $pathParts['dirname'];
+        // Remove backslash from path (Windows fix)
+        if (substr($path, -1) == '\\') {
+            $path = substr($path, 0, -1);
+        }
+        // Ensure the path ends with a forward slash
+        if (substr($path, -1) != '/') {
+            $path = $path . '/';
+        }
+        // Build the application URL
+        $cdnUrl = $protocol . $host . $path;
+        // Return the URL
+        return $cdnUrl;
+    }
 
+	
     /**
       * Compares two paths and returns the relative path from one to the other
      *

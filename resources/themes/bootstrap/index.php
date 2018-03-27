@@ -1,28 +1,42 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
+<?php 
+header("Content-type: text/html; charset=utf-8"); 
+$md_path_all = $lister->getListedPath();
+$md_path = explode("com", $md_path_all);
+if($md_path[1] != ""){
+	$md_path_last = substr($md_path[1], -1);
+	if($md_path_last != "/"){
+		$md_file = ".".$md_path[1]."/INFO.html";
+	}else{
+		$md_file = ".".$md_path[1]."INFO.html";
+	}
+}
+$md_text = file_get_contents($md_file);
+?>
 <html>
 
     <head>
 
-        <title>Directory listing of <?php echo $lister->getListedPath(); ?></title>
-        <link rel="shortcut icon" href="<?php echo THEMEPATH; ?>/img/folder.png">
+	<title>SZ Files</title>
 
         <!-- STYLES -->
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo THEMEPATH; ?>/css/style.css">
+        <link rel="stylesheet" type="text/css" href="//general-s3.cdn.stevenz.net/static/downloader/css/style.css">
 
         <!-- SCRIPTS -->
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script type="text/javascript" src="//general-s3.cdn.stevenz.net/static/downloader/js/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="<?php echo THEMEPATH; ?>/js/directorylister.js"></script>
+        <script type="text/javascript" src="//general-s3.cdn.stevenz.net/static/downloader/js/directorylister.js"></script>
 
         <!-- FONTS -->
-        <link rel="stylesheet" type="text/css"  href="//fonts.googleapis.com/css?family=Cutive+Mono">
+        <link rel="stylesheet" type="text/css"  href="//general-s3.cdn.stevenz.net/static/downloader/CutiveMono.css">
 
         <!-- META -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
+        <link rel="shortcut icon" href="//general-s3.cdn.stevenz.net/favicon.ico" />
 
         <?php file_exists('analytics.inc') ? include('analytics.inc') : false; ?>
 
@@ -131,7 +145,13 @@
         </div>
 
         <?php file_exists('footer.php') ? include('footer.php') : include($lister->getThemePath(true) . "/default_footer.php"); ?>
-
+		<!-- 说明 -->
+		<?php
+		if($md_text != ""){
+			echo $md_text;
+		}
+		?>
+		<!-- 说明 -->
         <div id="file-info-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">

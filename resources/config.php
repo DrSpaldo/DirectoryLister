@@ -3,11 +3,12 @@
 return array(
 
     // Basic settings
+    'home_label'                => 'Home',
     'hide_dot_files'            => true,
     'list_folders_first'        => true,
     'list_sort_order'           => 'natcasesort',
     'theme_name'                => 'bootstrap',
-    'external_links_new_window' => true,
+    'date_format'               => 'Y-m-d H:i:s', // See: http://php.net/manual/en/function.date.php
 
     // Hidden files
     'hidden_files' => array(
@@ -17,8 +18,16 @@ return array(
         'resources/*',
         'analytics.inc',
         'header.php',
-        'footer.php'
+        'footer.php',
+	'favicon.ico'
     ),
+
+    // If set to 'true' an directory with an index file (as defined below) will
+    // become a direct link to the index page instead of a browsable directory
+    'links_dirs_with_index' => false,
+
+    // Make linked directories open in a new (_blank) tab
+    'external_links_new_window' => true,
 
     // Files that, if present in a directory, make the directory
     // a direct link rather than a browse link.
@@ -29,7 +38,7 @@ return array(
     ),
 
     // File hashing threshold
-    'hash_size_limit' => 268435456, // 256 MB
+    'hash_size_limit' => 1073741824, // 1 GB
 
     // Custom sort order
     'reverse_sort' => array(
@@ -49,5 +58,10 @@ return array(
     'zip_disable' => array(
         // 'path/to/folder'
     ),
-
+    
+    //Enable CDN
+    'cdn' => false,
+    //CDN site.
+////    'cdn_site' = ,https://stevenz.xyz,
+    
 );
