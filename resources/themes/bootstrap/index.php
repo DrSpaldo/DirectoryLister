@@ -145,13 +145,11 @@ $md_text = file_get_contents($md_file);
         </div>
 
         <?php file_exists('footer.php') ? include('footer.php') : include($lister->getThemePath(true) . "/default_footer.php"); ?>
-		<!-- 说明 -->
 		<?php
 		if($md_text != ""){
 			echo $md_text;
 		}
 		?>
-		<!-- 说明 -->
         <div id="file-info-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
